@@ -3,7 +3,7 @@
     class="navbar navbar-expand-lg rounded-3 mx-auto my-2 w-100 bg-success bg-opacity-10 text-success"
   >
     <div class="container-fluid">
-      <router-link class="navbar-brand" to="#">
+      <router-link class="navbar-brand" :to="{ name: APP_ROUTE_NAMES.HOME }">
         <img
           src="@/assets/logo.png"
           alt="Logo"
@@ -26,7 +26,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <router-link class="nav-link" aria-current="page" :to="{ name: APP_ROUTE_NAMES.HOME }"
+              >Home</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              :to="{ name: APP_ROUTE_NAMES.ORDER_LIST }"
+              >Orders</router-link
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
@@ -39,13 +49,25 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Dropdown
+              Admin
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li>
+                <router-link
+                  class="dropdown-item"
+                  aria-current="page"
+                  :to="{ name: APP_ROUTE_NAMES.MENU_ITEM_LIST }"
+                  >Menu Item</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  class="dropdown-item"
+                  aria-current="page"
+                  :to="{ name: APP_ROUTE_NAMES.MANAGE_ORDER_ADMIN }"
+                  >Order Management</router-link
+                >
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -60,3 +82,6 @@
     </div>
   </nav>
 </template>
+<script setup>
+import { APP_ROUTE_NAMES } from '@/constants/routerName'
+</script>
