@@ -1,11 +1,11 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center">
+  <div class="d-flex justify-content-center align-items-center" v-if="loading">
     <div class="spinner-grow text-success" style="width: 2.5rem; height: 2.5rem" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" v-else>
     <div class="mx-auto">
       <div class="mb-4 border-bottom d-flex justify-content-between align-items-center py-3">
         <h3 class="fw-semibold text-success">Add Menu</h3>
@@ -62,7 +62,8 @@
               <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
                 <select id="category" class="form-select">
-                  <option>CATEGORY</option>
+                  <option value="" selected disabled>--Select a category--</option>
+                  <option v-for="category in CATEGORIES" :key="category">{{ category }}</option>
                 </select>
               </div>
 
@@ -92,3 +93,26 @@
     </div>
   </div>
 </template>
+<script setup>
+import {reactive, ref, onMounted} from 'vue';
+import {useRouter, useRoute} from 'vue-router';
+import { APP_ROUTE_NAMES } from '@/constants/routerName';
+import { CONFIG_IMAGE_URL } from '@/constants/config';
+import { CATEGORIES } from '@/constants/constants';
+
+const loading = ref(false);
+
+const menuItemObj = reactive({
+  name:'',
+  description:'',
+  specialTag:'',
+  category:'',
+  price: 0.0,
+  image:''
+})
+
+
+const router = new useRouter();
+const route = new useRoute();
+
+</script>
