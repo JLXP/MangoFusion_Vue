@@ -90,13 +90,20 @@
           <div class="col-lg-5">
             <div>
               <img
-                src=""
+                v-if="newUploadImage_base64 != ''"
+                :src="newUploadImage_base64 != '' ? newUploadImage_base64 : menuItemObj.image"
                 class="img-fluid w-100 mb-3 rounded"
                 style="aspect-ratio: 1/1; object-fit: cover"
               />
               <div class="mb-3">
                 <label for="image" class="form-label">Item Image</label>
-                <input id="image" type="file" class="form-control" accept="image/*" />
+                <input
+                  id="image"
+                  type="file"
+                  class="form-control"
+                  accept="image/*"
+                  @change="handleFileChange"
+                />
                 <div class="form-text">Leave empty to keep existing image</div>
               </div>
             </div>
@@ -115,6 +122,9 @@ import { CATEGORIES } from '@/constants/constants'
 
 const errorList = reactive([])
 
+const newUploadImage = ref(null)
+const newUploadImage_base64 = ref('')
+
 const isProcessing = ref(false)
 const loading = ref(false)
 
@@ -129,6 +139,36 @@ const menuItemObj = reactive({
 
 const router = new useRouter()
 const route = new useRoute()
+
+//handle file change
+
+const handleFileChange = (event) => {
+  isProcessing.value = true
+  const file = event.target.files[0]
+  newUploadImage.value = file
+  if (file) {
+    //Crea un objeto FileReader, que sirve para leer archivos del navegador
+    const reader = new FileReader()
+
+    /**
+     * 
+     * Define qué hacer cuando el archivo termine de leerse:
+
+      e.target.result contiene el archivo convertido
+
+      En este caso, queda como una URL en Base64 (data:image/png;base64,...)
+
+        Se guarda en newUploadImage_base64.value (probablemente un ref de Vue o una variable reactiva)
+     * 
+     */
+    reader.onload = (e) => {
+      newUploadImage_base64.value = e.target.result
+    }
+    //Inicia la lectura del archivo y lo convierte en Base64.
+    reader.readAsDataURL(file)
+  }
+  isProcessing.value = false
+}
 
 const onFormSubmit = async (e) => {
   e.preventDefault()
