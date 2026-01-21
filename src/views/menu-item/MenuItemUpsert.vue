@@ -145,6 +145,21 @@ const formData = new FormData()
 const router = new useRouter()
 const route = new useRoute()
 
+const menuItemIdForUpdate = route.params.id
+
+onMounted(async () => {
+  if (!menuItemIdForUpdate) return
+  loading.value = true
+  try {
+    const result = await menuItemService.getMenuItemById(menuItemIdForUpdate)
+    Object.assign(menuItemObj, result)
+  } catch (err) {
+    console.log('Error fetching menu item', err)
+  } finally {
+    loading.value = false
+  }
+})
+
 //handle file change
 
 const handleFileChange = (event) => {
@@ -156,7 +171,7 @@ const handleFileChange = (event) => {
     const reader = new FileReader()
 
     /**
-     * 
+     *
      * Define qué hacer cuando el archivo termine de leerse:
 
       e.target.result contiene el archivo convertido
@@ -164,7 +179,7 @@ const handleFileChange = (event) => {
       En este caso, queda como una URL en Base64 (data:image/png;base64,...)
 
         Se guarda en newUploadImage_base64.value (probablemente un ref de Vue o una variable reactiva)
-     * 
+     *
      */
     reader.onload = (e) => {
       newUploadImage_base64.value = e.target.result

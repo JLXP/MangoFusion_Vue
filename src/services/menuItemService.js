@@ -28,4 +28,18 @@ export default {
       throw error
     }
   },
+
+  async getMenuItemById(id) {
+    try {
+      const response = await api.get(`/menuItem/${id}`)
+      if (response.data.isSuccess) {
+        return response.data.result
+      } else {
+        throw new Error('Failed to fecth menu Items')
+      }
+    } catch (error) {
+      console.error('Error fetching menu items', error)
+      throw error
+    }
+  },
 }
