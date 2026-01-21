@@ -105,6 +105,7 @@ const loading = ref(false)
 const router = useRouter()
 
 const fetchMenuItems = async () => {
+  menuItems.length = 0
   loading.value = true
   try {
     const result = await menuItemService.getMenuItems()
