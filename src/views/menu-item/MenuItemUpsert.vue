@@ -129,7 +129,8 @@ import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { CATEGORIES } from '@/constants/constants'
 import menuItemService from '@/services/menuItemService'
-
+import { useSwal } from '@/composables/swal'
+const { showError, showSuccess, showConfirm } = useSwal()
 const errorList = reactive([])
 
 const newUploadImage = ref(null)
@@ -232,7 +233,7 @@ const onFormSubmit = async (e) => {
       menuItemService
         .createMenuItem(formData)
         .then(() => {
-          alert('menu item created')
+          showSuccess('Menu item created successfully')
           router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
         })
         .catch((err) => {
@@ -244,11 +245,12 @@ const onFormSubmit = async (e) => {
       menuItemService
         .updateMenuItem(menuItemIdForUpdate, formData)
         .then(() => {
-          alert('menu item updated')
+          showSuccess('Menu item updated successfully')
           router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
         })
         .catch((err) => {
           isProcessing.value = false
+          showError('Menu item update failed')
           console.log('Update Failed', err)
         })
     }

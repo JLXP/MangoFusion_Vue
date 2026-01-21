@@ -1303,6 +1303,11 @@ superjson@^2.2.2:
   dependencies:
     copy-anything "^4"
 
+sweetalert2@^11.26.17:
+  version "11.26.17"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.26.17.tgz#be5dd2a9b8d1c3b2672de4de4d172e62f7be3a6d"
+  integrity sha512-kkaySn1IRfwNlf9AkZVqDmBINDWw9NRR6Ij0O5dBRBOD1+mbtZJWxxR9/pA90nce9E5tIIkJ7SWij4rMWXtA1g==
+
 tinyglobby@^0.2.15:
   version "0.2.15"
   resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.15.tgz#e228dd1e638cea993d2fdb4fcd2d4602a79951c2"
