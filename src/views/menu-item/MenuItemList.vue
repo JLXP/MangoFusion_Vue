@@ -74,7 +74,10 @@
                       >
                         <i class="bi bi-pencil-square"></i>
                       </button>
-                      <button class="btn btn-sm btn-outline-danger">
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        @click="handleMenuItemDelete(menuItem.id)"
+                      >
                         <i class="bi bi-trash3-fill"></i>
                       </button>
                     </div>
@@ -94,7 +97,9 @@ import menuItemService from '@/services/menuItemService'
 import { ref, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
+import { useSwal } from '@/composables/swal'
 
+const { showConfirm, showError, showSuccess } = useSwal()
 const menuItems = reactive([])
 const loading = ref(false)
 const router = useRouter()
@@ -112,4 +117,21 @@ const fetchMenuItems = async () => {
 }
 
 onMounted(fetchMenuItems)
+
+const handleMenuItemDelete = async (id) => {
+  loading.value = true
+  try {
+    const confirmResult = await showConfirm('Are you sure you want to delete this MenuItem?')
+    if (confirmResult.isConfirmed) {
+      await menuItemService.deleteMenuItem(id)
+      showSuccess('Menu item deleted successfully.')
+      fetchMenuItems()
+    }
+  } catch (error) {
+    console.log('Error deleting menu item:', error)
+    showError('Failed to delete menu item.')
+  } finally {
+    loading.value = false
+  }
+}
 </script>
