@@ -69,7 +69,7 @@
         </div>
       </div>
       <div>
-        <div class="row">
+        <div class="row" v-if="menuItems.length && menuItems.length > 0">
           <MenuItemCard class="list-item col-12 col-md-6 col-lg-4 pb-4"></MenuItemCard>
           <div class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block">
             <i class="bi bi-emoji-frown"></i>
@@ -83,9 +83,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import MenuItemCard from '@/components/card/MenuItemCard.vue'
-import MenuItemCard from '@/components/card/MenuItemCard.vue'
+import { reactive, ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { APP_ROUTE_NAMES } from '@/constants/routerName'
+import { CONFIG_IMAGE_URL } from '@/constants/config'
+import { CATEGORIES } from '@/constants/constants'
+import menuItemService from '@/services/menuItemService'
+
+const menuItems = reactive([])
+const loading = ref(false)
+const router = useRouter()
+
+const fetchMenuItems = async () => {
+  menuItems.length = 0
+  loading.value = true
+  try {
+    const result = await menuItemService.getMenuItems()
+    menuItems.push(...result)
+  } catch (error) {
+    console.log('Error fetch menu items:', error)
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <style scoped>
