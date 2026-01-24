@@ -70,7 +70,12 @@
       </div>
       <div>
         <div class="row" v-if="menuItems.length && menuItems.length > 0">
-          <MenuItemCard class="list-item col-12 col-md-6 col-lg-4 pb-4"></MenuItemCard>
+          <MenuItemCard
+            v-for="(item, index) in menuItems"
+            :key="item.id"
+            :menuItem="item"
+            class="list-item col-12 col-md-6 col-lg-4 pb-4"
+          ></MenuItemCard>
           <div class="text-center py-5 display-4 mx-auto text-body-secondary mb-3 d-block">
             <i class="bi bi-emoji-frown"></i>
             <p class="lead text-body-secondary">No menu items found matching your criteria</p>
@@ -108,6 +113,8 @@ const fetchMenuItems = async () => {
     loading.value = false
   }
 }
+
+onMounted(fetchMenuItems)
 </script>
 
 <style scoped>
