@@ -35,8 +35,16 @@
         <!-- Categories -->
         <div class="col-lg-auto">
           <div class="d-flex flex-wrap gap-2">
-            <button class="btn rounded px-4 py-2 fs-7 position-relative overflow-hidden">
-              <span class="position-relative z-1">CATEGORY</span>
+            <button
+              :class="{
+                'btn-success disabled shadow-sm': category === selectedCategory,
+                'btn-outline-success': category !== selectedCategory,
+              }"
+              class="btn rounded px-4 py-2 fs-7 position-relative overflow-hidden"
+              v-for="(category, index) in categoryList"
+              :key="index"
+            >
+              <span class="position-relative z-1">{{ category }}</span>
             </button>
           </div>
         </div>
@@ -63,12 +71,12 @@
       </div>
 
       <!-- Content Section -->
-      <div class="text-center py-5">
+      <div class="text-center py-5" v-if="loading">
         <div class="spinner-border text-success" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <div>
+      <div v-else>
         <div class="row" v-if="menuItems.length && menuItems.length > 0">
           <MenuItemCard
             v-for="(item, index) in menuItems"
@@ -99,7 +107,9 @@ import menuItemService from '@/services/menuItemService'
 
 const menuItems = reactive([])
 const loading = ref(false)
+const selectedCategory = ref('All')
 const router = useRouter()
+const categoryList = ref(['All', ...CATEGORIES])
 
 const fetchMenuItems = async () => {
   menuItems.length = 0
