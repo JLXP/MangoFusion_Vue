@@ -58,12 +58,15 @@
               data-bs-toggle="dropdown"
             >
               <i class="bi bi-sort-down"></i>
-              <span class="fs-7">SORT OPTION</span>
+              <span class="fs-7">{{ selectedSortOption }}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3">
-              <li>
-                <button class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
-                  <span class="fs-7 px-3 mx-1">SORT</span>
+              <li v-for="(sort, index) in SORT_OPTIONS" :key="index">
+                <button
+                  class="dropdown-item py-2 px-3 d-flex align-items-center gap-2"
+                  @click="updateSelectedSortOption(sort)"
+                >
+                  <span class="fs-7 px-1 mx-1">{{ sort }}</span>
                 </button>
               </li>
             </ul>
@@ -103,17 +106,29 @@ import { reactive, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
-import { CATEGORIES } from '@/constants/constants'
+import {
+  CATEGORIES,
+  SORT_NAME_A_Z,
+  SORT_NAME_Z_A,
+  SORT_PRICE_HIGH_LOW,
+  SORT_PRICE_LOW_HIGH,
+  SORT_OPTIONS,
+} from '@/constants/constants'
 import menuItemService from '@/services/menuItemService'
 
 let menuItems = reactive([])
 const loading = ref(false)
 const selectedCategory = ref('All')
+const selectedSortOption = ref(SORT_OPTIONS[0])
 const router = useRouter()
 const categoryList = ref(['All', ...CATEGORIES])
 
 function updateSelectedCategory(category) {
   selectedCategory.value = category
+}
+
+function updateSelectedSortOption(sort) {
+  selectedSortOption.value = sort
 }
 
 const filteredItems = computed(() => {
@@ -123,6 +138,16 @@ const filteredItems = computed(() => {
       : menuItems.filter(
           (item) => item.category.toUpperCase() === selectedCategory.value.toUpperCase(),
         )
+
+  if (selectedSortOption.value === SORT_NAME_A_Z) {
+    tempArray.sort((a, b) => a.name.localeCompare(b.name))
+  } else if (selectedSortOption.value === SORT_NAME_Z_A) {
+    tempArray.sort((a, b) => b.name.localeCompare(a.name))
+  } else if (selectedSortOption.value === SORT_PRICE_LOW_HIGH) {
+    tempArray.sort((a, b) => a.price - b.price)
+  } else if (selectedSortOption.value === SORT_PRICE_HIGH_LOW) {
+    tempArray.sort((a, b) => b.price - a.price)
+  }
 
   return tempArray
 })
