@@ -41,6 +41,7 @@
                 'btn-outline-success': category !== selectedCategory,
               }"
               class="btn rounded px-4 py-2 fs-7 position-relative overflow-hidden"
+              @click="updateSelectedCategory(category)"
               v-for="(category, index) in categoryList"
               :key="index"
             >
@@ -77,9 +78,9 @@
         </div>
       </div>
       <div v-else>
-        <div class="row" v-if="menuItems.length && menuItems.length > 0">
+        <div class="row" v-if="filteredItems.length && filteredItems.length > 0">
           <MenuItemCard
-            v-for="(item, index) in menuItems"
+            v-for="(item, index) in filteredItems"
             :key="item.id"
             :menuItem="item"
             class="list-item col-12 col-md-6 col-lg-4 pb-4"
@@ -105,11 +106,26 @@ import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { CATEGORIES } from '@/constants/constants'
 import menuItemService from '@/services/menuItemService'
 
-const menuItems = reactive([])
+let menuItems = reactive([])
 const loading = ref(false)
 const selectedCategory = ref('All')
 const router = useRouter()
 const categoryList = ref(['All', ...CATEGORIES])
+
+function updateSelectedCategory(category) {
+  selectedCategory.value = category
+}
+
+const filteredItems = computed(() => {
+  let tempArray =
+    selectedCategory.value === 'All'
+      ? [...menuItems]
+      : menuItems.filter(
+          (item) => item.category.toUpperCase() === selectedCategory.value.toUpperCase(),
+        )
+
+  return tempArray
+})
 
 const fetchMenuItems = async () => {
   menuItems.length = 0
