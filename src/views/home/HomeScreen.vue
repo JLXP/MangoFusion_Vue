@@ -82,8 +82,9 @@
         </div>
       </div>
       <div v-else>
-        <div class="row" v-if="filteredItems.length && filteredItems.length > 0">
+        <div class="row">
           <MenuItemCard
+            v-if="filteredItems.length && filteredItems.length > 0"
             v-for="(item, index) in filteredItems"
             :key="item.id"
             :menuItem="item"
@@ -117,13 +118,13 @@ import {
 } from '@/constants/constants'
 import menuItemService from '@/services/menuItemService'
 
-let menuItems = reactive([])
+const menuItems = reactive([])
 const loading = ref(false)
 const selectedCategory = ref('All')
 const selectedSortOption = ref(SORT_OPTIONS[0])
 const search = ref('')
 const router = useRouter()
-const categoryList = ref(['All', ...CATEGORIES])
+const categoryList = reactive(['All', ...CATEGORIES])
 
 function updateSelectedCategory(category) {
   selectedCategory.value = category
