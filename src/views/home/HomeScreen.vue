@@ -99,6 +99,7 @@
     </div>
 
     <!-- Menu Detail Modal -->
+    <MenuItemDetailsModal />
   </div>
 </template>
 
@@ -117,6 +118,7 @@ import {
   SORT_OPTIONS,
 } from '@/constants/constants'
 import menuItemService from '@/services/menuItemService'
+import MenuItemDetailsModal from '@/components/modals/MenuItemDetailsModal.vue'
 
 const menuItems = reactive([])
 const loading = ref(false)
