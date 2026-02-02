@@ -50,9 +50,13 @@
         </div>
 
         <!-- Cart Controls -->
-        <div class="d-flex align-items-center justify-content-between">
+        <div
+          class="d-flex align-items-center justify-content-between"
+          @click="addToCart"
+          :disabled="isProcessing"
+        >
           <button class="btn btn-success w-100 rounded py-2">
-            <span class="spinner-border spinner-border-sm me-2"></span>
+            <span v-if="isProcessing" class="spinner-border spinner-border-sm me-2"></span>
             <span class="small"><i class="bi bi-cart-plus"></i> &nbsp; Add to Cart</span>
           </button>
 
@@ -78,9 +82,19 @@
 
 <script setup>
 import { CONFIG_IMAGE_URL } from '@/constants/config'
+import { useCartStore } from '@/stores/cartStore'
 import { defineProps } from 'vue'
+
+const cartStore = useCartStore()
+const isProcessing = ref(false)
 const emit = defineEmits(['showDetails'])
 const props = defineProps({
   menuItem: Object,
 })
+
+const addToCart = () => {
+  isProcessing.value = true
+  cartStore.addToCart(props.menuItem)
+  isProcessing.value = false
+}
 </script>
