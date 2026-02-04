@@ -56,7 +56,7 @@
           :disabled="isProcessing"
           v-if="!isInCart"
         >
-          <button class="btn btn-success w-100 rounded py-2">
+          <button class="btn btn-success w-100 rounded py-2" v-if="!isInCart">
             <span v-if="isProcessing" class="spinner-border spinner-border-sm me-2"></span>
             <span class="small"><i class="bi bi-cart-plus"></i> &nbsp; Add to Cart</span>
           </button>
