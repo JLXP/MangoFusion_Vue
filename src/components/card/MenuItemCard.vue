@@ -87,6 +87,7 @@ import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { useCartStore } from '@/stores/cartStore'
 import { defineProps } from 'vue'
 
+// Import necessary modules and components
 const cartStore = useCartStore()
 const isProcessing = ref(false)
 const emit = defineEmits(['showDetails'])
