@@ -96,7 +96,6 @@ const props = defineProps({
 })
 
 const cartItem = computed(() => cartStore.cartItems.find((item) => item.id === props.menuItem.id))
-// !! esto hace que se convierta en boleano, asi se asegura que regrese true o false dependiendo si hay un valor dentro de un cart item value
 const isInCart = computed(() => !!cartItem.value)
 const itemQuantity = computed(() => cartItem.value?.quantity || 0)
 
