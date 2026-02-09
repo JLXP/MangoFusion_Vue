@@ -39,7 +39,8 @@ export const useCartStore = defineStore('cartStore', () => {
   }
 
   function removeFromCartQuantity(itemId, quantity) {
-    const itemIndex = cartItems.find((cartItem) => cartItem.id === itemId)
+    //queremos encontrar el indice
+    const itemIndex = cartItems.findIndex((cartItem) => cartItem.id === itemId)
     if (item) {
       if (quantity <= 0) {
       } else {
