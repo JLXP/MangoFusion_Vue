@@ -32,20 +32,18 @@ export const useCartStore = defineStore('cartStore', () => {
     const item = cartItems.find((cartItem) => cartItem.id === itemId)
     if (item) {
       if (quantity <= 0) {
+        removeFromCart(itemId)
       } else {
         item.quantity = quantity
       }
     }
   }
 
-  function removeFromCartQuantity(itemId, quantity) {
+  function removeFromCart(itemId) {
     //queremos encontrar el indice
     const itemIndex = cartItems.findIndex((cartItem) => cartItem.id === itemId)
-    if (item) {
-      if (quantity <= 0) {
-      } else {
-        item.quantity = quantity
-      }
+    if (itemIndex !== -1) {
+      cartItems.splice(itemIndex, 1)
     }
   }
 
@@ -59,5 +57,7 @@ export const useCartStore = defineStore('cartStore', () => {
     cartTotal,
     addToCart,
     clearCart,
+    removeFromCart,
+    updateQuantity,
   }
 })
