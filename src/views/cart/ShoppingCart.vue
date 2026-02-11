@@ -11,7 +11,7 @@
           <p class="text-body-secondary mb-4">
             Looks like you haven't added any items to your cart yet.
           </p>
-          <button class="btn btn-success">
+          <button class="btn btn-success" @click="cotinueShopping">
             <i class="bi bi-arrow-left-square"></i>
             Continue Shopping
           </button>
@@ -44,7 +44,11 @@
                       <td class="text-center align-middle">${{ item.price.toFixed(2) }}</td>
                       <td class="align-middle">
                         <div class="input-group input-group-sm justify-content-center" style="">
-                          <button class="btn btn-outline-secondary" type="button">
+                          <button
+                            class="btn btn-outline-secondary"
+                            type="button"
+                            @click="decreaseQuantity(item.id)"
+                          >
                             <i class="bi bi-dash"></i>
                           </button>
                           <input
@@ -54,10 +58,17 @@
                             v-model="item.quantity"
                             style="max-width: 50px"
                           />
-                          <button class="btn btn-outline-secondary" type="button">
+                          <button
+                            class="btn btn-outline-secondary"
+                            type="button"
+                            @click="increaseQuantity(item.id)"
+                          >
                             <i class="bi bi-plus"></i>
                           </button>
-                          <button class="btn btn-sm btn-outline-danger mx-md-4 mx-1">
+                          <button
+                            class="btn btn-sm btn-outline-danger mx-md-4 mx-1"
+                            @click="removeItem(item.id)"
+                          >
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
@@ -72,11 +83,11 @@
           <div class="row g-4">
             <div class="col-md-6">
               <div class="d-flex gap-2">
-                <button class="btn btn-outline-success">
+                <button class="btn btn-outline-success" @click="cotinueShopping">
                   <i class="bi bi-arrow-left-square mx-1"></i>
                   <span class="">Continue Shopping</span>
                 </button>
-                <button class="btn btn-outline-danger">
+                <button class="btn btn-outline-danger" @click="cartStore.clearCart">
                   <i class="bi bi-trash mx-1"></i>
                   <span class="">Clear Cart</span>
                 </button>
@@ -87,13 +98,13 @@
                 <div class="card-body">
                   <h4 class="card-title h6 mb-3">Order Summary</h4>
                   <div class="d-flex justify-content-between mb-2">
-                    <span class="text-body-secondary">Items (0):</span>
-                    <span>$$$</span>
+                    <span class="text-body-secondary">Items:</span>
+                    <span>{{ cartStore.cartCount }}</span>
                   </div>
                   <hr />
                   <div class="d-flex justify-content-between mb-3">
                     <span class="fw-bold">Total:</span>
-                    <span class="fw-bold text-success">$$$</span>
+                    <span class="fw-bold text-success">${{ cartStore.cartTotal.toFixed(2) }}</span>
                   </div>
                   <button class="btn btn-success w-100">
                     <i class="bi bi-cash-stack"></i>
@@ -121,4 +132,26 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const cartStore = useCartStore()
+
+const removeFromCart = (itemId) => {
+  cartStore.removeFromCart(itemId)
+}
+
+const cotinueShopping = () => {
+  router.push({ name: APP_ROUTE_NAMES.HOME })
+}
+
+const increaseQuantity = (itemId) => {
+  const item = cartStore.cartItems.find((cartItem) => cartItem.id === itemId)
+  cartStore.updateQuantity(item.id, item.quantity + 1)
+}
+
+const decreaseQuantity = (itemId) => {
+  const item = cartStore.cartItems.find((cartItem) => cartItem.id === itemId)
+  if (item && item.quantity > 1) {
+    cartStore.updateQuantity(itemId, item.quantity - 1)
+  } else {
+    cartStore.removeFromCart(itemId)
+  }
+}
 </script>
