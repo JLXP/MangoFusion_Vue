@@ -18,7 +18,7 @@ import { computed } from 'vue';
         <span class="d-block" v-for="error in errorList" :key="error"> {{ error }} </span>
       </div>
 
-      <form>
+      <form @submit.prevent="submitOrder">
         <div class="mb-3">
           <label for="pickupName" class="form-label">Name</label>
           <input v-model="orderData.pickUpName" type="text" class="form-control" id="pickupName" />
@@ -116,5 +116,34 @@ const emit = defineEmits(['close'])
 
 const closeModal = () => {
   emit('close')
+}
+
+const submitOrder = async () => {
+  try {
+    isSubmitting.value = true
+    errorList.length = 0
+    const requiredFields = [
+      { key: 'pickUpName', message: 'Name is required' },
+      { key: 'pickUpEmail', message: 'Email is required' },
+      { key: 'pickUpPhoneNumber', message: 'Phone Number is required' },
+    ]
+
+    requiredFields.forEach((field) => {
+      const value = orderData[field.key]
+
+      if (!value || value.trim().length === 0) {
+        errorList.push(field.message)
+      }
+    })
+
+    if (errorList.length > 0) {
+      isSubmitting.value = false
+      return
+    }
+  } catch (error) {
+    errorList.push(error.message)
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
