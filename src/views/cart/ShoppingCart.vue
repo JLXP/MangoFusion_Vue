@@ -120,6 +120,7 @@
         </div>
       </div>
     </div>
+    <PlaceOrderModal></PlaceOrderModal>
   </div>
 </template>
 
@@ -129,6 +130,7 @@ import { CONFIG_IMAGE_URL } from '@/constants/config'
 import { computed, ref } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter } from 'vue-router'
+import PlaceOrderModal from '@/components/modals/PlaceOrderModal.vue'
 
 const router = useRouter()
 const cartStore = useCartStore()
