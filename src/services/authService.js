@@ -3,6 +3,7 @@ import api from '@/services/api'
 export default {
   async signUp(userData) {
     try {
+      //registration endpoint
       const response = await api.post('/auth/register', {
         email: userData.email,
         password: userData.password,
