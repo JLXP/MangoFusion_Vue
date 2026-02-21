@@ -1,3 +1,4 @@
+import { useSwal } from '@/composables/swal'
 import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import router from '@/router/routes'
 import authService from '@/services/authService'
@@ -23,6 +24,9 @@ export const useAuthStore = defineStore('authStore', () => {
   async function signUp(userData) {
     try {
       await authService.signUp(userData)
+      const { showSuccess } = useSwal()
+      showSuccess('Registration successful')
+      router.push(APP_ROUTE_NAMES.SIGN_IN)
     } catch (err) {
       return {
         success: false,

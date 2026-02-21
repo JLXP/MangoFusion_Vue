@@ -101,6 +101,12 @@ const onSignUpSubmit = async () => {
     console.log('Sign Up Response:', response)
     if (response.success) {
       console.log('Success')
+    } else {
+      if (response.message !== undefined) {
+        response.message.split('--').forEach((err) => {
+          errorList.push(err)
+        })
+      }
     }
   } catch (err) {
     errorList.push(err)
