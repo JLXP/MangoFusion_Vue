@@ -42,8 +42,8 @@
   </div>
 </template>
 <script setup>
-import { ROLES } from '@/constants/constants'
 import { APP_ROUTE_NAMES } from '@/constants/routerName'
+import { useAuthStore } from '@/stores/authStore'
 import { reactive, ref } from 'vue'
 
 const formObj = reactive({
@@ -74,6 +74,17 @@ const onSignInSubmit = async () => {
   }
 
   try {
+    const response = await useAuthStore.signIn(formObj)
+    console.log('Sign Up Response:', response)
+    if (response.success) {
+      console.log('Success')
+    } else {
+      if (response.message !== undefined) {
+        response.message.split('--').forEach((err) => {
+          errorList.push(err)
+        })
+      }
+    }
   } catch (err) {
     errorList.push(err)
   } finally {

@@ -24,4 +24,25 @@ export default {
       throw error
     }
   },
+  async signIn(userData) {
+    try {
+      //registration endpoint
+      const response = await api.post('/auth/login', {
+        email: userData.email,
+        password: userData.password,
+      })
+      console.log('Sign In Response:', response)
+      if (response.data.isSuccess) {
+        return {
+          success: true,
+          message: 'Login Successful',
+        }
+      } else {
+        throw new Error('Login failed')
+      }
+    } catch (error) {
+      console.error('Error in Login', error)
+      throw error
+    }
+  },
 }
