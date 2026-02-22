@@ -36,10 +36,15 @@ export const useAuthStore = defineStore('authStore', () => {
     }
   }
 
-  async function signIn(userData) {
+  async function signIn(formObj) {
     try {
-      const response = await authService.signIn(userData)
-      console.log('Sign In Response:', response)
+      const { token, user: userData } = await authService.signIn(formObj)
+      Object.assign(user, userData)
+      user.isLoggedIn = true
+      isAuthenticated.value = true
+
+      router.push('/')
+
       //const { showSuccess } = useSwal()
       //showSuccess('Login successful')
       //router.push(APP_ROUTE_NAMES.HOME)
@@ -56,6 +61,6 @@ export const useAuthStore = defineStore('authStore', () => {
     isAuthenticated,
     getUserInfo,
     signUp,
-    SignIn,
+    signIn,
   }
 })
