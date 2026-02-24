@@ -38,6 +38,7 @@ export const useAuthStore = defineStore('authStore', () => {
 
   async function signIn(formObj) {
     try {
+      //async await
       const { token, user: userData } = await authService.signIn(formObj)
       Object.assign(user, userData)
       user.isLoggedIn = true
