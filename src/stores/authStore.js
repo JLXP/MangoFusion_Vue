@@ -3,6 +3,7 @@ import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import router from '@/router/routes'
 import authService from '@/services/authService'
 import SignIn from '@/views/auth/SignIn.vue'
+import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
 
@@ -43,6 +44,7 @@ export const useAuthStore = defineStore('authStore', () => {
       Object.assign(user, userData)
       user.isLoggedIn = true
       isAuthenticated.value = true
+      Cookies.set('name', 'value', { expires: 7 })
 
       router.push('/')
 
