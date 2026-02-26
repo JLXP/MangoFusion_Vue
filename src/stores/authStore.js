@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('authStore', () => {
       Object.assign(user, userData)
       user.isLoggedIn = true
       isAuthenticated.value = true
-      Cookies.set('name', 'value', { expires: 7 })
+      Cookies.set('token_mango', token, { expires: 7 })
 
       router.push('/')
 
