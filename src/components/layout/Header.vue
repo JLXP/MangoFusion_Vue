@@ -94,7 +94,7 @@
               >Sign Up</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="authStore.isAuthenticated">
             <button class="nav-link px-2" aria-current="page" :to="{ name: APP_ROUTE_NAMES.HOME }">
               Logout
             </button>
@@ -137,9 +137,11 @@
 </template>
 <script setup>
 import { APP_ROUTE_NAMES } from '@/constants/routerName'
+import { useAuthStore } from '@/stores/authStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useThemeStore } from '@/stores/themeStore'
 
 const cartStore = useCartStore()
 const themeStore = useThemeStore()
+const authStore = useAuthStore()
 </script>
