@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('authStore', () => {
     const payload = JSON.parse(atob(token.split('.')[1]))
     return {
       email: payload.email,
-      name: payload.name,
+      name: payload.fullname,
       id: payload.id,
       role: payload.role,
     }

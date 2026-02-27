@@ -40,7 +40,7 @@ export default {
           token,
           email,
           role: payload.role,
-          name: payload.name,
+          name: payload.fullname,
           id: payload.id,
         }
       } else {
