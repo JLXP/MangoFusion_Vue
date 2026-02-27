@@ -95,7 +95,7 @@
             >
           </li>
           <li class="nav-item" v-if="authStore.isAuthenticated">
-            <button class="nav-link px-2" aria-current="page" :to="{ name: APP_ROUTE_NAMES.HOME }">
+            <button class="nav-link px-2" aria-current="page" @click="authStore.signOut()">
               Logout
             </button>
           </li>

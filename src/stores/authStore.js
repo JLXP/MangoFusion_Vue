@@ -22,6 +22,10 @@ export const useAuthStore = defineStore('authStore', () => {
     return isAuthenticated.value ? user : null
   })
 
+  const isAdmin = computed(() => {
+    return isAuthenticated.value && user.role === 'admin'
+  })
+
   function decodeToken(token) {
     const payload = JSON.parse(atob(token.split('.')[1]))
     return {
@@ -101,12 +105,19 @@ export const useAuthStore = defineStore('authStore', () => {
     Cookies.remove('token_mango')
   }
 
+  function signOut() {
+    clearAuthData()
+    router.push({ name: APP_ROUTE_NAMES.SIGN_IN })
+  }
+
   return {
     user,
     isAuthenticated,
     getUserInfo,
+    isAdmin,
     signUp,
     signIn,
     initialize,
+    signOut,
   }
 })
