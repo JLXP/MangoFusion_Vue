@@ -91,9 +91,13 @@ import { computed } from 'vue';
 </template>
 
 <script setup>
+import { APP_ROUTE_NAMES } from '@/constants/routerName'
+import orderService from '@/services/orderService'
 import { useAuthStore } from '@/stores/authStore'
 import { useCartStore } from '@/stores/cartStore'
 import { ref, computed, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const authStore = useAuthStore()
 
 const cartStore = useCartStore()
@@ -163,6 +167,16 @@ const submitOrder = async () => {
           price: item.price,
         }))
       : []
+
+    const orderHeader = await orderService.createOrder(orderData)
+    if (orderHeader && orderHeader.orderHeaderId > 0) {
+      router.push({
+        name: APP_ROUTE_NAMES.ORDER_CONFIRM,
+        params: { orderId: orderHeader.orderHeaderId },
+      })
+    } else {
+      throw new Error('Failed to create order')
+    }
   } catch (error) {
     errorList.push(error.message)
   } finally {
