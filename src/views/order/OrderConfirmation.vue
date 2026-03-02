@@ -35,5 +35,6 @@ import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 const route = useRoute()
 
+// Extract orderId from route params
 const orderId = ref(route.params.orderId)
 </script>
