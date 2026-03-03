@@ -7,12 +7,11 @@
       <div class="row">
         <div class="col-md-4 mb-3">
           <label class="form-label">Filter by Status</label>
-          <select class="form-select">
+          <select class="form-select" v-model="statusFilter">
             <option value="">All Status</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Ready for Pickup">Ready for Pickup</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
+            <option v-for="status in ORDER_STATUS" :key="status" :value="status">
+              {{ status }}
+            </option>
           </select>
         </div>
         <div class="col-md-4 mb-3">
@@ -42,13 +41,13 @@
       </div>
     </div>
 
-    <div class="text-center py-4 fs-5 text-body-secondary">Loading orders...</div>
-    <div class="text-center py-5 card border-0 shadow-sm">
+    <div class="text-center py-4 fs-5 text-body-secondary" v-if="loading">Loading orders...</div>
+    <div class="text-center py-5 card border-0 shadow-sm" v-else-if="filteredOrders.length === 0">
       <p class="mb-0">No orders found matching your criteria.</p>
     </div>
-    <div>
+    <div v-else>
       <div class="mb-3">
-        <span class="badge bg-success">XX orders found</span>
+        <span class="badge bg-success">{{ filteredOrders.length }} orders found</span>
       </div>
       <div class="table-responsive card border-0 shadow-sm">
         <table class="table table-hover mb-0">
@@ -73,17 +72,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#ID</td>
-              <td>NAME</td>
+            <tr v-for="order in filteredOrders" :key="order.orderHeaderId">
+              <td>#{{ order.orderHeaderId }}</td>
+              <td>{{orderHeaderId.pickUpName}}</td>
               <td>
-                <div>PHONE</div>
-                <div class="text-body-secondary small">EMAIL</div>
+                <div>{{order.pickUpPhoneNumber}}</div>
+                <div class="text-body-secondary small">{{order.pickUpEmail}}</div>
               </td>
-              <td>$$$</td>
-              <td>Count of Items</td>
+              <td>{{ order.totalItem }}</td>
+              <td>{{ order.orderTotal }}</td>
               <td>
-                <div class="badge rounded-pill">STATUS</div>
+                <div class="badge rounded-pill">{{order.status}}</div>
               </td>
               <td>
                 <button class="btn btn-sm btn-success">
@@ -147,6 +146,7 @@
 import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import orderService from '@/services/orderService'
 import { computed, onMounted, reactive, ref } from 'vue'
+import { ORDER_STATUS, ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETED, ORDER_STATUS_CONFIRMED, ORDER_STATUS_READY_FOR_PICKUP } from '@/constants/constants'
 
 const orders = reactive([])
 const loading = ref(false)
@@ -169,6 +169,16 @@ const resetFilter = () => {
   sortDirection.value = 'desc'
   currentPage.value = 1
 }
+
+
+const filteredOrders = computed(()=>{
+  let result = [...orders];
+  if(statusFilter.value){
+    result = result.filter(
+      order => order.status.toUpperCase() === statusFilter.value.toUpperCase()
+    )
+  }
+})
 
 const fetchOrders = async () => {
   orders.length = 0
