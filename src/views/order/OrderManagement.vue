@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-4 mb-3">
           <label class="form-label">Sort By</label>
-          <select class="form-select">
+          <select class="form-select" v-model="sortBy">
             <option value="orderHeaderId">Order ID</option>
             <option value="orderTotal">Total Amount</option>
             <option value="pickUpName">Customer Name</option>
@@ -178,6 +178,34 @@ const filteredOrders = computed(()=>{
       order => order.status.toUpperCase() === statusFilter.value.toUpperCase()
     )
   }
+
+  if(searchQuery.value){
+    const query = searchQuery.value.toUpperCase()
+    result = result.filter((order)=>
+      order.pickUpEmail.toUpperCase().includes(query) ||
+      order.pickUpPhoneNumber.toUpperCase().includes(query) ||
+      order.pickUpName.toUpperCase().includes(query)
+    )
+  }
+
+  //apply sorting logic
+  result.sort((a,b)=>{
+    let aValue = a[sortBy.value]
+    let bValue = b[sortBy.value]
+
+    if(typeof aValue === 'string'){
+      aValue = aValue.toLowerCase()
+      bValue = bValue.toLowerCase()
+    }
+    
+    if(sortDirection.value === 'asc'){
+      return aValue > bValue ? 1 : -1 
+    }else{
+      return aValue < bValue ? 1 : -1 
+    }
+      
+  })
+
 })
 
 const fetchOrders = async () => {
