@@ -33,7 +33,7 @@
       <div class="row mt-2">
         <div class="col-md-8 mb-3">
           <label class="form-label">Search</label>
-          <input type="text" class="form-control" placeholder="Search by name, email or phone" />
+          <input type="text" v-model="searchQuery" class="form-control" placeholder="Search by name, email or phone" />
         </div>
         <div class="col-md-4 mb-3 d-flex align-items-end">
           <button class="btn btn-outline-secondary w-100">Reset Filters</button>
