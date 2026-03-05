@@ -88,7 +88,19 @@
               <td>{{ order.totalItem }}</td>
               <td>{{ order.orderTotal }}</td>
               <td>
-                <div class="badge rounded-pill">{{order.status}}</div>
+                <div class="badge rounded-pill"
+                :class="{
+                  'bg-warning-subtle text-warning-emphasis':
+                  order.status === ORDER_STATUS_CONFIRMED,
+                  'bg-info-subtle text-info-emphasis':
+                  order.status === ORDER_STATUS_READY_FOR_PICKUP,
+                  'bg-success-subtle text-success-emphasis':
+                  order.status === ORDER_STATUS_COMPLETED,
+                  'bg-danger-subtle text-danger-emphasis':
+                  order.status === ORDER_STATUS_CANCELLED,
+                  
+                }"
+                >{{order.status}}</div>
               </td>
               <td>
                 <button class="btn btn-sm btn-success">
@@ -174,6 +186,15 @@ const resetFilter = () => {
   sortBy.value = 'orderHeaderId'
   sortDirection.value = 'desc'
   currentPage.value = 1
+}
+
+const updateSort = (field)=>{
+  if(sortBy.value == field){
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortBy.value = field
+    sortDirection.value = 'asc'
+  }
 }
 
 
