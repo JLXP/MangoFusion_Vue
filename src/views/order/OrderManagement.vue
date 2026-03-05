@@ -36,7 +36,7 @@
           <input type="text" v-model="searchQuery" class="form-control" placeholder="Search by name, email or phone" />
         </div>
         <div class="col-md-4 mb-3 d-flex align-items-end">
-          <button class="btn btn-outline-secondary w-100">Reset Filters</button>
+          <button class="btn btn-outline-secondary w-100" @click="resetFilter">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -53,19 +53,25 @@
         <table class="table table-hover mb-0">
           <thead>
             <tr>
-              <th class="cursor-pointer">
+              <th style="cursor: pointer;" @click="updateSort('orderHeaderId')">
                 Order ID
-                <span class="ms-1"> ↑↓ </span>
+                <span class="ms-1" v-if="sortBy==='orderHeaderId' "> 
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
-              <th class="cursor-pointer">
-                Customer
-                <span class="ms-1"> ↑↓ </span>
+              <th style="cursor: pointer;" @click="updateSort('pickUpName')">
+                Pick Up Name
+                <span class="ms-1" v-if="sortBy==='pickUpName' "> 
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
               <th>Contact</th>
               <th>Number of Items</th>
-              <th class="cursor-pointer">
+              <th style="cursor: pointer;" @click="updateSort('orderTotal')">
                 Total
-                <span class="ms-1"> ↑↓ </span>
+                <span class="ms-1" v-if="sortBy==='orderTotal' "> 
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
               <th>Status</th>
               <th>Actions</th>
