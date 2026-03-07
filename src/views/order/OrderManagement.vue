@@ -33,10 +33,17 @@
       <div class="row mt-2">
         <div class="col-md-8 mb-3">
           <label class="form-label">Search</label>
-          <input type="text" v-model="searchQuery" class="form-control" placeholder="Search by name, email or phone" />
+          <input
+            type="text"
+            v-model="searchQuery"
+            class="form-control"
+            placeholder="Search by name, email or phone"
+          />
         </div>
         <div class="col-md-4 mb-3 d-flex align-items-end">
-          <button class="btn btn-outline-secondary w-100" @click="resetFilter">Reset Filters</button>
+          <button class="btn btn-outline-secondary w-100" @click="resetFilter">
+            Reset Filters
+          </button>
         </div>
       </div>
     </div>
@@ -53,23 +60,23 @@
         <table class="table table-hover mb-0">
           <thead>
             <tr>
-              <th style="cursor: pointer;" @click="updateSort('orderHeaderId')">
+              <th style="cursor: pointer" @click="updateSort('orderHeaderId')">
                 Order ID
-                <span class="ms-1" v-if="sortBy==='orderHeaderId' "> 
+                <span class="ms-1" v-if="sortBy === 'orderHeaderId'">
                   {{ sortDirection === 'asc' ? '↑' : '↓' }}
                 </span>
               </th>
-              <th style="cursor: pointer;" @click="updateSort('pickUpName')">
+              <th style="cursor: pointer" @click="updateSort('pickUpName')">
                 Pick Up Name
-                <span class="ms-1" v-if="sortBy==='pickUpName' "> 
+                <span class="ms-1" v-if="sortBy === 'pickUpName'">
                   {{ sortDirection === 'asc' ? '↑' : '↓' }}
                 </span>
               </th>
               <th>Contact</th>
               <th>Number of Items</th>
-              <th style="cursor: pointer;" @click="updateSort('orderTotal')">
+              <th style="cursor: pointer" @click="updateSort('orderTotal')">
                 Total
-                <span class="ms-1" v-if="sortBy==='orderTotal' "> 
+                <span class="ms-1" v-if="sortBy === 'orderTotal'">
                   {{ sortDirection === 'asc' ? '↑' : '↓' }}
                 </span>
               </th>
@@ -80,27 +87,29 @@
           <tbody>
             <tr v-for="order in filteredOrders" :key="order.orderHeaderId">
               <td>#{{ order.orderHeaderId }}</td>
-              <td>{{orderHeaderId.pickUpName}}</td>
+              <td>{{ orderHeaderId.pickUpName }}</td>
               <td>
-                <div>{{order.pickUpPhoneNumber}}</div>
-                <div class="text-body-secondary small">{{order.pickUpEmail}}</div>
+                <div>{{ order.pickUpPhoneNumber }}</div>
+                <div class="text-body-secondary small">{{ order.pickUpEmail }}</div>
               </td>
               <td>{{ order.totalItem }}</td>
               <td>{{ order.orderTotal }}</td>
               <td>
-                <div class="badge rounded-pill"
-                :class="{
-                  'bg-warning-subtle text-warning-emphasis':
-                  order.status === ORDER_STATUS_CONFIRMED,
-                  'bg-info-subtle text-info-emphasis':
-                  order.status === ORDER_STATUS_READY_FOR_PICKUP,
-                  'bg-success-subtle text-success-emphasis':
-                  order.status === ORDER_STATUS_COMPLETED,
-                  'bg-danger-subtle text-danger-emphasis':
-                  order.status === ORDER_STATUS_CANCELLED,
-                  
-                }"
-                >{{order.status}}</div>
+                <div
+                  class="badge rounded-pill"
+                  :class="{
+                    'bg-warning-subtle text-warning-emphasis':
+                      order.status === ORDER_STATUS_CONFIRMED,
+                    'bg-info-subtle text-info-emphasis':
+                      order.status === ORDER_STATUS_READY_FOR_PICKUP,
+                    'bg-success-subtle text-success-emphasis':
+                      order.status === ORDER_STATUS_COMPLETED,
+                    'bg-danger-subtle text-danger-emphasis':
+                      order.status === ORDER_STATUS_CANCELLED,
+                  }"
+                >
+                  {{ order.status }}
+                </div>
               </td>
               <td>
                 <button class="btn btn-sm btn-success">
@@ -164,7 +173,13 @@
 import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import orderService from '@/services/orderService'
 import { computed, onMounted, reactive, ref } from 'vue'
-import { ORDER_STATUS, ORDER_STATUS_CANCELLED, ORDER_STATUS_COMPLETED, ORDER_STATUS_CONFIRMED, ORDER_STATUS_READY_FOR_PICKUP } from '@/constants/constants'
+import {
+  ORDER_STATUS,
+  ORDER_STATUS_CANCELLED,
+  ORDER_STATUS_COMPLETED,
+  ORDER_STATUS_CONFIRMED,
+  ORDER_STATUS_READY_FOR_PICKUP,
+} from '@/constants/constants'
 
 const orders = reactive([])
 const loading = ref(false)
@@ -188,8 +203,8 @@ const resetFilter = () => {
   currentPage.value = 1
 }
 
-const updateSort = (field)=>{
-  if(sortBy.value == field){
+const updateSort = (field) => {
+  if (sortBy.value == field) {
     sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
   } else {
     sortBy.value = field
@@ -197,42 +212,40 @@ const updateSort = (field)=>{
   }
 }
 
-
-const filteredOrders = computed(()=>{
-  let result = [...orders];
-  if(statusFilter.value){
+const filteredOrders = computed(() => {
+  let result = [...orders]
+  if (statusFilter.value) {
     result = result.filter(
-      order => order.status.toUpperCase() === statusFilter.value.toUpperCase()
+      (order) => order.status.toUpperCase() === statusFilter.value.toUpperCase(),
     )
   }
-
-  if(searchQuery.value){
+  //apply search filter
+  if (searchQuery.value) {
     const query = searchQuery.value.toUpperCase()
-    result = result.filter((order)=>
-      order.pickUpEmail.toUpperCase().includes(query) ||
-      order.pickUpPhoneNumber.toUpperCase().includes(query) ||
-      order.pickUpName.toUpperCase().includes(query)
+    result = result.filter(
+      (order) =>
+        order.pickUpEmail.toUpperCase().includes(query) ||
+        order.pickUpPhoneNumber.toUpperCase().includes(query) ||
+        order.pickUpName.toUpperCase().includes(query),
     )
   }
 
   //apply sorting logic
-  result.sort((a,b)=>{
+  result.sort((a, b) => {
     let aValue = a[sortBy.value]
     let bValue = b[sortBy.value]
 
-    if(typeof aValue === 'string'){
+    if (typeof aValue === 'string') {
       aValue = aValue.toLowerCase()
       bValue = bValue.toLowerCase()
     }
-    
-    if(sortDirection.value === 'asc'){
-      return aValue > bValue ? 1 : -1 
-    }else{
-      return aValue < bValue ? 1 : -1 
-    }
-      
-  })
 
+    if (sortDirection.value === 'asc') {
+      return aValue > bValue ? 1 : -1
+    } else {
+      return aValue < bValue ? 1 : -1
+    }
+  })
 })
 
 const fetchOrders = async () => {
