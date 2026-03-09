@@ -246,6 +246,11 @@ const filteredOrders = computed(() => {
       return aValue < bValue ? 1 : -1
     }
   })
+  return result
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredOrders.value.length / itemPerPage)
 })
 
 const fetchOrders = async () => {
