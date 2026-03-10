@@ -253,6 +253,10 @@ const totalPages = computed(() => {
   return Math.ceil(filteredOrders.value.length / itemPerPage)
 })
 
+const paginateOrders = computed(() => {
+  const start = current
+})
+
 const fetchOrders = async () => {
   orders.length = 0
   loading.value = true
