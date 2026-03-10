@@ -152,7 +152,7 @@
 
           <!-- Page numbers with limited display -->
           <template v-for="pageNum in displayedPageNumber" :key="pageNum">
-            <li class="page-item disabled">
+            <li class="page-item disabled" v-if="pageNum === '...'">
               <span class="page-link border-success">...</span>
             </li>
             <li class="page-item">
@@ -304,6 +304,25 @@ const displayedPageNumber = computed(() => {
   if (total <= 5) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }
+
+  const range = []
+  range.push(1) //always show first page
+
+  const rangeStart = Math.max(2, current - delta)
+  const rangeEnd = Math.min(total - 1, current + delta)
+  if (rangeStart > 2) {
+    range.push('...') //show ellipsis if there's a gap between first page and start of range
+  }
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    range.push(i)
+  }
+  if (rangeEnd < total - 1) {
+    range.push('...') //show ellipsis if there's a gap between end of range and last page
+  }
+  if (total > 1) {
+    range.push(total) //always show last page
+  }
+  return range
 })
 
 const fetchOrders = async () => {
