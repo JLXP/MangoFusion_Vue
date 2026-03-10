@@ -85,7 +85,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="order in filteredOrders" :key="order.orderHeaderId">
+            <tr v-for="order in paginateOrders" :key="order.orderHeaderId">
               <td>#{{ order.orderHeaderId }}</td>
               <td>{{ orderHeaderId.pickUpName }}</td>
               <td>
@@ -126,7 +126,12 @@
         <ul class="pagination pagination-md">
           <!-- First page button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="First">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="First"
+              @click="changePage(1)"
+            >
               <span aria-hidden="true">&laquo;</span>
               <span class="visually-hidden">First page</span>
             </a>
@@ -134,22 +139,46 @@
 
           <!-- Previous button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="Previous">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="Previous"
+              @click="changePage(currentPage - 1)"
+            >
               <span aria-hidden="true">&lsaquo;</span>
               <span class="visually-hidden">Previous page</span>
             </a>
           </li>
 
           <!-- Page numbers with limited display -->
-          <li class="page-item disabled">
-            <span class="page-link border-success">...</span>
-          </li>
-          <li class="page-item">
-            <a class="page-link text-muted border-success" href="#"> XX </a>
-          </li>
+          <template v-for="pageNum in displayedPageNumber" :key="pageNum">
+            <li class="page-item disabled">
+              <span class="page-link border-success">...</span>
+            </li>
+            <li class="page-item">
+              <a
+                :class="
+                  pageNum === currentPage
+                    ? 'bg-success border-success text-white'
+                    : 'text-success border-success'
+                "
+                class="page-link border-success"
+                href="#"
+                @click="changePage(pageNum)"
+              >
+                {{ pageNum }}
+              </a>
+            </li>
+          </template>
+
           <!-- Next button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="Next">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="Next"
+              @click="changePage(currentPage + 1)"
+            >
               <span aria-hidden="true">&rsaquo;</span>
               <span class="visually-hidden">Next page</span>
             </a>
@@ -157,7 +186,12 @@
 
           <!-- Last page button -->
           <li class="page-item">
-            <a class="page-link text-success border-success" href="#" aria-label="Last">
+            <a
+              class="page-link text-success border-success"
+              href="#"
+              aria-label="Last"
+              @click="changePage(totalPages)"
+            >
               <span aria-hidden="true">&raquo;</span>
               <span class="visually-hidden">Last page</span>
             </a>
@@ -170,7 +204,6 @@
   </div>
 </template>
 <script setup>
-import { APP_ROUTE_NAMES } from '@/constants/routerName'
 import orderService from '@/services/orderService'
 import { computed, onMounted, reactive, ref } from 'vue'
 import {
@@ -254,7 +287,23 @@ const totalPages = computed(() => {
 })
 
 const paginateOrders = computed(() => {
-  const start = current
+  const startIndex = (currentPage.value - 1) * itemPerPage
+  const endIndex = startIndex + itemPerPage
+  return filteredOrders.value.slice(startIndex, endIndex)
+})
+
+const changePage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+}
+
+const displayedPageNumber = computed(() => {
+  const total = totalPages.value
+  const current = currentPage.value
+  const delta = 1 //number of page links to show around current page
+  if (total <= 5) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
 })
 
 const fetchOrders = async () => {
