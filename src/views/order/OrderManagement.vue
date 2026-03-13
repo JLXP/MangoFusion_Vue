@@ -286,6 +286,7 @@ const totalPages = computed(() => {
   return Math.ceil(filteredOrders.value.length / itemPerPage)
 })
 
+//compute the orders to display based on current page and items per page
 const paginateOrders = computed(() => {
   const startIndex = (currentPage.value - 1) * itemPerPage
   const endIndex = startIndex + itemPerPage
