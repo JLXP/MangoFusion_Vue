@@ -298,6 +298,7 @@ const changePage = (page) => {
   currentPage.value = page
 }
 
+//compute the page numbers to display in pagination with ellipsis if there are many pages
 const displayedPageNumber = computed(() => {
   const total = totalPages.value
   const current = currentPage.value
