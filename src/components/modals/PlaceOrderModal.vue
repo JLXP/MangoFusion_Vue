@@ -104,6 +104,7 @@ const cartStore = useCartStore()
 const isSubmitting = ref(false)
 const errorList = reactive([])
 
+//order data structure to send to backend when placing order
 const orderData = reactive({
   pickUpName: '',
   pickUpPhoneNumber: '',
