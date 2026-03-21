@@ -112,7 +112,7 @@
                 </div>
               </td>
               <td>
-                <button class="btn btn-sm btn-success">
+                <button class="btn btn-sm btn-success" @click="viewOrderDetails(order)">
                   <i class="bi bi-card-checklist"></i> &nbsp;View Details
                 </button>
               </td>
@@ -201,6 +201,7 @@
     </div>
 
     <!-- Order Details Modal Component -->
+     <OrderDetailsModal></OrderDetailsModal>
   </div>
 </template>
 <script setup>
@@ -213,9 +214,11 @@ import {
   ORDER_STATUS_CONFIRMED,
   ORDER_STATUS_READY_FOR_PICKUP,
 } from '@/constants/constants'
+import OrderDetailsModal from '@/components/modals/OrderDetailsModal.vue'
 
 const orders = reactive([])
 const loading = ref(false)
+const selectedOrder = ref(null)
 
 //filter and sorting
 const statusFilter = ref('')
@@ -234,6 +237,15 @@ const resetFilter = () => {
   sortBy.value = 'orderHeaderId'
   sortDirection.value = 'desc'
   currentPage.value = 1
+}
+
+const viewOrderDetails = (order) => {
+  selectedOrder.value = {...order}
+  //logic to open modal
+}
+
+const closeOrderDetails = (order)=>{
+selectedOrder.value = null
 }
 
 const updateSort = (field) => {
