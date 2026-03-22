@@ -239,6 +239,7 @@ const resetFilter = () => {
   currentPage.value = 1
 }
 
+//view order details in modal
 const viewOrderDetails = (order) => {
   selectedOrder.value = {...order}
   //logic to open modal
