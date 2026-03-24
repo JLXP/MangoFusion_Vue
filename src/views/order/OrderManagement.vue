@@ -244,7 +244,7 @@ const viewOrderDetails = (order) => {
   selectedOrder.value = {...order}
   //logic to open modal
 }
-
+//close
 const closeOrderDetails = (order)=>{
 selectedOrder.value = null
 }
