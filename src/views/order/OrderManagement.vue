@@ -248,7 +248,7 @@ const viewOrderDetails = (order) => {
 const closeOrderDetails = (order)=>{
 selectedOrder.value = null
 }
-
+//update sorting logic when clicking on column header
 const updateSort = (field) => {
   if (sortBy.value == field) {
     sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
