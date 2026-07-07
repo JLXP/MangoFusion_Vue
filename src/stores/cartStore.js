@@ -11,6 +11,7 @@ export const useCartStore = defineStore(
     })
 
     // Calculate total price of items in the cart
+    //comment
     const cartTotal = computed(() => {
       return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0)
     })
