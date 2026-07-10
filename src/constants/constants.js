@@ -8,6 +8,7 @@ export const SORT_OPTIONS = [SORT_NAME_A_Z, SORT_NAME_Z_A, SORT_PRICE_LOW_HIGH, 
 
 export const ROLES = ['Admin', 'Customer']
 
+//comment
 export const ORDER_STATUS_CONFIRMED = 'Confirmed'
 export const ORDER_STATUS_READY_FOR_PICKUP = 'Ready for Pickup'
 export const ORDER_STATUS_COMPLETED = 'Completed'
